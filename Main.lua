@@ -239,7 +239,7 @@ EventUtil.ContinueAfterAllEvents(function()
     end)
   end
 
-  for i = 1, 10 do
+  for i = 1, MERCHANT_ITEMS_PER_PAGE do
     local itemButton = _G["MerchantItem" .. i .. "ItemButton"]
     itemButton:HookScript("OnEnter", function()
       local index = itemButton:GetID()
