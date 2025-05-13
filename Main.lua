@@ -172,12 +172,6 @@ EventUtil.ContinueAfterAllEvents(function()
       end)
     end
   end)
-  transferButton:HookScript("OnLeave", function()
-    transferButton:Hide()
-  end)
-  transferButton:HookScript("OnHide", function()
-    transferButton:Hide()
-  end)
 
   local confirmationDialog
   do
@@ -226,12 +220,25 @@ EventUtil.ContinueAfterAllEvents(function()
     confirmationDialog:Show()
   end)
   lossyTransferButton:SetNormalTexture("warbands-transferable-icon")
-  lossyTransferButton:HookScript("OnLeave", function()
-    lossyTransferButton:Hide()
-  end)
-  lossyTransferButton:HookScript("OnHide", function()
-    lossyTransferButton:Hide()
-  end)
+
+  for _, button in ipairs({transferButton, lossyTransferButton}) do
+    button:HookScript("OnEnter", function()
+      GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
+      button.UpdateTooltip()
+    end)
+    button.UpdateTooltip = function()
+      GameTooltip:SetMerchantItem(button.index)
+      GameTooltip:AddLine(GREEN_FONT_COLOR:WrapTextInColorCode("<Click to start transferring required currency>"))
+      GameTooltip:Show()
+    end
+    button:HookScript("OnLeave", function()
+      GameTooltip:Hide()
+      button:Hide()
+    end)
+    button:HookScript("OnHide", function()
+      button:Hide()
+    end)
+  end
 
   for i = 1, 10 do
     local itemButton = _G["MerchantItem" .. i .. "ItemButton"]
@@ -255,6 +262,7 @@ EventUtil.ContinueAfterAllEvents(function()
                   button = lossyTransferButton
                   confirmationDialog.text:SetText("You will lose " .. (100 - info.transferPercentage) .. "% on transfer")
                 end
+                button.index = index
                 button:Show()
                 button:SetFrameStrata("DIALOG")
                 button:SetAllPoints(itemButton)
