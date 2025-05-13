@@ -161,6 +161,12 @@ local function GetCurrencyID(currencyName)
   end
 end
 
+local function GetMaxCharacterAmount(currencyID)
+  local data = C_CurrencyInfo.FetchCurrencyDataFromAccountCharacters(currencyID)
+  table.sort(data, function(a, b) return a.quantity > b.quantity end)
+  return data[1].quantity
+end
+
 EventUtil.ContinueAfterAllEvents(function()
   local transferButton = GetTransferButton()
   transferButton:SetNormalTexture("warbands-transferable-icon")
@@ -259,7 +265,7 @@ EventUtil.ContinueAfterAllEvents(function()
                   button = transferButton
                 else
                   button = lossyTransferButton
-                  confirmationDialog.text:SetText("You will lose " .. (100 - info.transferPercentage) .. "% on transfer")
+                  confirmationDialog.text:SetText("You will lose " .. (100 - info.transferPercentage) .. "% on transfer of " .. FormatLargeNumber(GetMaxCharacterAmount(currencyID)) .. " " .. name)
                 end
                 button.index = index
                 button:Show()
