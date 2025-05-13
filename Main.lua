@@ -144,7 +144,6 @@ end
 
 local function GetCurrencyID(currencyName)
   for index = 1, C_CurrencyInfo.GetCurrencyListSize() do
-    index = index + 1
     local info = C_CurrencyInfo.GetCurrencyListInfo(index)
     if info.isHeader then
       if not info.isHeaderExpanded then
