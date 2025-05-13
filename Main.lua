@@ -163,6 +163,9 @@ end
 
 local function GetMaxCharacterAmount(currencyID)
   local data = C_CurrencyInfo.FetchCurrencyDataFromAccountCharacters(currencyID)
+  if not data or not data[1] then
+    return 0
+  end
   table.sort(data, function(a, b) return a.quantity > b.quantity end)
   return data[1].quantity
 end
