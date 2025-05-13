@@ -56,7 +56,7 @@ local function GetTransferButton(templates)
   transferButton:SetAttribute("macrotext", [[
 /click CashinatorActuallyTransferButton LeftButton 1
   ]])
-  transferButton:HookScript("OnClick", function(_, button, isDown)
+  transferButton:HookScript("OnClick", function()
     TokenFramePopup:SetPoint("TOPLEFT", CharacterFrame, "TOPRIGHT", 3, -28)
   end)
 
@@ -266,6 +266,12 @@ EventUtil.ContinueAfterAllEvents(function()
                 button:Show()
                 button:SetFrameStrata("DIALOG")
                 button:SetAllPoints(itemButton)
+                local merchantItemInfo = C_MerchantFrame.GetItemInfo(index)
+                if merchantItemInfo.isUsable and merchantItemInfo.isPurchasable then
+                  button:GetNormalTexture():SetDesaturated(false)
+                else
+                  button:GetNormalTexture():SetDesaturated(true)
+                end
                 break
               end
             end
