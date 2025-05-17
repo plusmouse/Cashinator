@@ -41,7 +41,7 @@ local function Unmute()
 end
 
 local function GetTransferButton(templates)
-  templates = templates and "SecureActionButtonTemplate," .. templates or "SecureActionButtonTemplate"
+  templates = templates and "InsecureActionButtonTemplate," .. templates or "InsecureActionButtonTemplate"
   local transferButton = CreateFrame("Button", "CashinatorButton", UIParent, templates)
   transferButton:RegisterForClicks("AnyUp", "AnyDown")
   transferButton:SetAttribute("downbutton", "startup")
@@ -63,6 +63,9 @@ local function GetTransferButton(templates)
   transferButton:SetScript("OnEnter", function()
     if InCombatLockdown() or not transferButton.currencyID then
       return
+    end
+    if DressUpFrame:IsShown() then
+      HideUIPanel(DressUpFrame)
     end
 
     Mute()
@@ -171,8 +174,18 @@ local function GetMaxCharacterAmount(currencyID)
 end
 
 EventUtil.ContinueAfterAllEvents(function()
+  local lastButton
+
   local transferButton = GetTransferButton()
   transferButton:SetNormalTexture("warbands-transferable-icon")
+  transferButton:RegisterEvent("MODIFIER_STATE_CHANGED")
+  transferButton:SetScript("OnEvent", function()
+    if IsModifiedClick("DRESSUP") then
+      transferButton:Hide()
+    elseif lastButton:IsMouseOver() then
+      lastButton:GetScript("OnEnter")(lastButton)
+    end
+  end)
   transferButton:HookScript("OnClick", function(_, _, isDown)
     if not isDown then
       C_Timer.After(0.25, function()
@@ -251,6 +264,10 @@ EventUtil.ContinueAfterAllEvents(function()
   for i = 1, MERCHANT_ITEMS_PER_PAGE do
     local itemButton = _G["MerchantItem" .. i .. "ItemButton"]
     itemButton:HookScript("OnEnter", function()
+      lastButton = itemButton
+      if IsModifiedClick("DRESSUP") then
+        return
+      end
       local index = itemButton:GetID()
       if not CanAffordMerchantItem(index) then
         local count = GetMerchantItemCostInfo(index)
