@@ -182,7 +182,7 @@ EventUtil.ContinueAfterAllEvents(function()
   transferButton:SetScript("OnEvent", function()
     if IsModifiedClick("DRESSUP") then
       transferButton:Hide()
-    elseif lastButton:IsMouseOver() then
+    elseif lastButton and lastButton:IsMouseOver() then
       lastButton:GetScript("OnEnter")(lastButton)
     end
   end)
@@ -196,9 +196,9 @@ EventUtil.ContinueAfterAllEvents(function()
 
   local confirmationDialog
   do
-    local dialog = CreateFrame("Frame", "BaganatorCustomiseDialogCategoriesImportDialog", UIParent)
+    local dialog = CreateFrame("Frame", "CashinatorConfirmTransferDialog", UIParent)
     dialog:SetToplevel(true)
-    table.insert(UISpecialFrames, "BaganatorCustomiseDialogCategoriesImportDialog")
+    table.insert(UISpecialFrames, "CashinatorConfirmTransferDialog")
     dialog:SetPoint("TOP", 0, -135)
     dialog:EnableMouse(true)
     dialog:SetFrameStrata("DIALOG")
