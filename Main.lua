@@ -64,7 +64,7 @@ local function GetTransferButton(templates)
     if InCombatLockdown() or not transferButton.currencyID then
       return
     end
-    if DressUpFrame:IsShown() then
+    if DressUpFrame:IsShown() and not C_AddOns.IsAddOnLoaded("NoAutoClose") then
       HideUIPanel(DressUpFrame)
     end
 
