@@ -12,7 +12,7 @@ do
   local maxTransferButton = CreateFrame("Button", "CashinatorMaxTransferButton", UIParent, "SecureActionButtonTemplate")
   maxTransferButton:RegisterForClicks("AnyUp", "AnyDown")
   maxTransferButton:SetAttribute("type", "click")
-  maxTransferButton:SetAttribute("clickbutton", CurrencyTransferMenu.AmountSelector.MaxQuantityButton)
+  maxTransferButton:SetAttribute("clickbutton", CurrencyTransferMenu.Content.AmountSelector.MaxQuantityButton)
 
   local actuallyTransferButton = CreateFrame("Button", "CashinatorActuallyTransferButton", UIParent, "SecureActionButtonTemplate")
   actuallyTransferButton:RegisterForClicks("AnyUp", "AnyDown")
